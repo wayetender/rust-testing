@@ -1,10 +1,7 @@
-// Pure ordered linked list -- only uses Box and mem::replace
-
-use std::mem;
-
+// Pure ordered linked list
 struct Node {
     elem: i32,
-    next: Option<Box<Node>>,
+    next: Option<Box<Node>>
 }
 
 pub struct List {
@@ -15,34 +12,18 @@ impl List {
     pub fn new() -> List {
         List { head: None }
     }
-    // // Recursive way:
-    // fn find_node<'a>(node : &'a mut Option<Box<Node>>, elem: i32) -> &'a mut Option<Box<Node>> {
-    //     let recurse = match *node {
-    //         None => false,
-    //         Some(ref n) => if n.elem > elem { false } else { true }
-    //     };
-    //     if recurse { List::find_node(&mut node.as_mut().unwrap().next, elem) } else { node }
-    // }
-
-    // Iterative way:
-    fn find_node(mut node : &mut Option<Box<Node>>, elem: i32) -> &mut Option<Box<Node>> {
+    pub fn insert(&mut self, elem: i32) {
+        let mut node = &mut self.head;
         loop {
             let cur = node;
-            if cur.is_none() || cur.as_mut().unwrap().elem > elem { 
+            if option_satisfies!(cur, |n:&mut Box<Node>| n.elem <= elem) { 
+                node = &mut cur.as_mut().unwrap().next; 
+            } else {
                 node = cur; 
                 break; 
-            } else {
-                node = &mut cur.as_mut().unwrap().next; 
             }
         };
-        node
-    }
-    pub fn insert(&mut self, elem: i32) {
-        let mut node = List::find_node(&mut self.head, elem);
-        let insert_point = node.take();
-        let new_node = Some(Box::new(Node { elem: elem, next: insert_point }));
-        mem::replace(node, new_node);
-
+        replace!(node, |node| Some(Box::new(Node { elem: elem, next: node })))
     }
     pub fn pop(&mut self) -> Option<i32> {
         match self.head.take() {
@@ -53,6 +34,11 @@ impl List {
                 Some(node.elem)
             }
         }
+    }
+    pub fn peek(&self) -> Option<i32> {
+        self.head.as_ref().map(|node| {
+            node.elem
+        })
     }
 }
 
@@ -78,6 +64,7 @@ mod test {
         // Check normal removal
         assert_eq!(list.pop(), Some(1));
         assert_eq!(list.pop(), Some(2));
+        assert_eq!(list.peek(), Some(3));
         assert_eq!(list.pop(), Some(3));
         assert_eq!(list.pop(), Some(4));
         assert_eq!(list.pop(), Some(5));
