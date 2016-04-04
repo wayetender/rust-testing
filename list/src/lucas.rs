@@ -22,7 +22,7 @@ impl List {
     //     if recurse { List::find_node(&mut node.as_mut().unwrap().next, elem) } else { node }
     // }
 
-    // Iterative way
+    // Iterative way:
     fn find_node(mut node : &mut Option<Box<Node>>, elem: i32) -> &mut Option<Box<Node>> {
         loop {
             let cur = node;
@@ -67,14 +67,18 @@ mod test {
         assert_eq!(list.pop(), None);
 
         // Populate list
-        list.insert(3);
-        list.insert(10);
+        list.insert(2);
+        list.insert(4);
         list.insert(1);
+        list.insert(3);
+        list.insert(5);
 
         // Check normal removal
         assert_eq!(list.pop(), Some(1));
+        assert_eq!(list.pop(), Some(2));
         assert_eq!(list.pop(), Some(3));
-        assert_eq!(list.pop(), Some(10));
+        assert_eq!(list.pop(), Some(4));
+        assert_eq!(list.pop(), Some(5));
         assert_eq!(list.pop(), None);
     }
 }
