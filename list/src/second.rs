@@ -27,12 +27,6 @@ impl<T> List<T> {
     }
 
     pub fn push(&mut self, elem: T) {
-        let mut node = self.head.take();
-        loop {
-            if node == None || elem > node.elem { break }
-            node = node.next;
-        }
-
         let new_node = Box::new(Node {
             elem: elem,
             next: self.head.take(),
