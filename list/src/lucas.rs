@@ -1,3 +1,5 @@
+// Pure ordered linked list -- only uses Box and mem::replace
+
 use std::mem;
 
 struct Node {
