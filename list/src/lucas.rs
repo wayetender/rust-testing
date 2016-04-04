@@ -13,12 +13,24 @@ impl List {
     pub fn new() -> List {
         List { head: None }
     }
-    fn find_node<'a>(node : &'a mut Option<Box<Node>>, elem: i32) -> &'a mut Option<Box<Node>> {
-        let recurse = match *node {
-            None => false,
-            Some(ref n) => if n.elem > elem { false } else { true }
+    // fn find_node<'a>(node : &'a mut Option<Box<Node>>, elem: i32) -> &'a mut Option<Box<Node>> {
+    //     let recurse = match *node {
+    //         None => false,
+    //         Some(ref n) => if n.elem > elem { false } else { true }
+    //     };
+    //     if recurse { List::find_node(&mut node.as_mut().unwrap().next, elem) } else { node }
+    // }
+    fn find_node(mut node : &mut Option<Box<Node>>, elem: i32) -> &mut Option<Box<Node>> {
+        loop {
+            let cur = node;
+            if cur.is_none() || cur.as_mut().unwrap().elem > elem { 
+                node = cur; 
+                break; 
+            } else {
+                node = &mut cur.as_mut().unwrap().next; 
+            }
         };
-        if recurse { List::find_node(&mut node.as_mut().unwrap().next, elem) } else { node }
+        node
     }
     pub fn insert(&mut self, elem: i32) {
         let mut node = List::find_node(&mut self.head, elem);
