@@ -13,6 +13,7 @@ impl List {
     pub fn new() -> List {
         List { head: None }
     }
+    // // Recursive way:
     // fn find_node<'a>(node : &'a mut Option<Box<Node>>, elem: i32) -> &'a mut Option<Box<Node>> {
     //     let recurse = match *node {
     //         None => false,
@@ -20,6 +21,8 @@ impl List {
     //     };
     //     if recurse { List::find_node(&mut node.as_mut().unwrap().next, elem) } else { node }
     // }
+
+    // Iterative way
     fn find_node(mut node : &mut Option<Box<Node>>, elem: i32) -> &mut Option<Box<Node>> {
         loop {
             let cur = node;
