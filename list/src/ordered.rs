@@ -3,7 +3,6 @@ struct Node {
     elem: i32,
     next: Option<Box<Node>>
 }
-
 pub struct List {
     head: Option<Box<Node>>
 }
@@ -16,7 +15,7 @@ impl List {
         let mut node = &mut self.head;
         loop {
             let cur = node;
-            if option_satisfies!(cur, |n:&mut Box<Node>| n.elem <= elem) { 
+            if cur.as_ref().map(|n| n.elem <= elem).unwrap_or(false) { 
                 node = &mut cur.as_mut().unwrap().next; 
             } else {
                 node = cur; 
@@ -36,12 +35,9 @@ impl List {
         }
     }
     pub fn peek(&self) -> Option<i32> {
-        self.head.as_ref().map(|node| {
-            node.elem
-        })
+        self.head.as_ref().map(|n| { n.elem })
     }
 }
-
 
 #[cfg(test)]
 mod test {
