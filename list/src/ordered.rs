@@ -22,6 +22,7 @@ impl List {
                 break; 
             }
         };
+        // see macros.rs
         replace!(cur, |cur| Some(Box::new(Node { elem: elem, next: cur })))
     }
     pub fn pop(&mut self) -> Option<i32> {
