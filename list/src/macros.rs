@@ -12,10 +12,4 @@ macro_rules! replace {
     };
 }
 
-#[macro_export]
-macro_rules! option_satisfies {
-    ($v:ident, $p:expr) => (
-        $v.is_some() && (($p)($v.as_mut().unwrap()))
-    )
-}
 

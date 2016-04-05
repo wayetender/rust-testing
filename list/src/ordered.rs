@@ -12,17 +12,17 @@ impl List {
         List { head: None }
     }
     pub fn insert(&mut self, elem: i32) {
-        let mut node = &mut self.head;
+        let mut cur = &mut self.head;
         loop {
-            let cur = node;
-            if cur.as_ref().map(|n| n.elem <= elem).unwrap_or(false) { 
-                node = &mut cur.as_mut().unwrap().next; 
+            let tmp = cur;
+            if tmp.as_ref().map(|n| n.elem <= elem).unwrap_or(false) { 
+                cur = &mut tmp.as_mut().unwrap().next; 
             } else {
-                node = cur; 
+                cur = tmp; 
                 break; 
             }
         };
-        replace!(node, |node| Some(Box::new(Node { elem: elem, next: node })))
+        replace!(cur, |cur| Some(Box::new(Node { elem: elem, next: cur })))
     }
     pub fn pop(&mut self) -> Option<i32> {
         match self.head.take() {
